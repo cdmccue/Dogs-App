@@ -1,0 +1,23 @@
+<div class="navbar navbar-inverse bg-inverse">
+  <a class="navbar-brand text-white">Dogs On My Street</a>
+  <button class="btn btn-primary pull-xs-right" (click)="goHome()">
+    <span class="glyphicon glyphicon-home">Home</span>
+  </button>
+  <span class="icon-dog"></span>
+</div>
+
+<h2 class="p-a-1">Discussions</h2>
+
+<button class="btn btn-primary m-l-1" (click)="redirect()">New Discussion!</button>
+
+<div class="p-a-1">
+  <div *ngFor="let discussion of discussions" class="card card-outline-primary">
+    <h4 class="card-header">
+      <a routerLink="/discussion/{{discussion.id}}">{{discussion.subject}}</a></h4>
+    <div class="card-text p-a-1">
+      Neighborhood: {{discussion.street}}, {{discussion.town}}<br>
+      Posted by: {{discussion.user}}<br>
+      Date posted: {{discussion.created | date : "short"}}
+    </div>
+  </div>
+</div>
