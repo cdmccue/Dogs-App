@@ -3,45 +3,64 @@
   <button class="btn btn-primary pull-xs-right" (click)="goHome()">
     <span class="glyphicon glyphicon-home">Home</span>
   </button>
+  <button *ngIf="!activeusername" class="btn btn-primary pull-xs-right m-r-1" routerLink="/login">Login</button>
+  <button *ngIf="activeusername" class="btn btn-primary pull-xs-right m-r-1" (click)="logout()">Logout {{activeusername}}</button>
 </div>
 
 <div class="p-a-1">
   <div class="card card-outline-primary">
     <h4 class="card-header">New Discussion</h4>
-    <form *ngIf="!submitted" class="card-text p-a-1" (ngSubmit)="submitDiscussion(dForm)" #dForm="ngForm">
+    <form *ngIf="activeusername" class="card-text p-a-1" (ngSubmit)="submitDiscussion(dForm)" #dForm="ngForm"
+          [formGroup]="d_form">
 
       <div class="form-group">
         <label for="username">Username:</label>
         <input type="text" class="form-control" id="username"
-               [(ngModel)]="discussion_model.user" name="username">
+               [(ngModel)]="discussion_model.user" name="username"
+               formControlName="username">
       </div>
+      <div class="alert alert-danger" *ngIf="d_form.controls['username'].touched  && !d_form.controls['username'].valid">
+        {{ titleAlert }}</div>
 
       <div class="form-group">
         <label for="town">Town:</label>
         <input type="text" class="form-control" id="town"
-               [(ngModel)]="discussion_model.town" name="town">
+               [(ngModel)]="discussion_model.town" name="town"
+               formControlName="town">
       </div>
+      <div class="alert alert-danger" *ngIf="d_form.controls['town'].touched  && !d_form.controls['town'].valid">
+        {{ titleAlert }}</div>
 
       <div class="form-group">
         <label for="street">Street:</label>
         <input type="text" class="form-control" id="street"
-               [(ngModel)]="discussion_model.street" name="street">
+               [(ngModel)]="discussion_model.street" name="street"
+               formControlName="street">
       </div>
+      <div class="alert alert-danger" *ngIf="d_form.controls['street'].touched  && !d_form.controls['street'].valid">
+        {{ titleAlert }}</div>
 
       <div class="form-group">
         <label for="subject">Subject:</label>
         <input type="text" class="form-control" id="subject"
-               [(ngModel)]="discussion_model.subject" name="subject">
+               [(ngModel)]="discussion_model.subject" name="subject"
+               formControlName="subject">
       </div>
+      <div class="alert alert-danger" *ngIf="d_form.controls['subject'].touched  && !d_form.controls['subject'].valid">
+        {{ titleAlert }}</div>
 
       <div class="form-group">
         <label for="message">Message:</label>
-        <input type="text" class="form-control" id="message"
-               [(ngModel)]="discussion_model.message" name="message">
+        <textarea rows="15" type="text" class="form-control" id="message"
+               [(ngModel)]="discussion_model.message" name="message"
+                  formControlName="message"></textarea>
       </div>
+      <div class="alert alert-danger" *ngIf="d_form.controls['message'].touched  && !d_form.controls['message'].valid">
+        {{ titleAlert }}</div>
 
-      <button type="submit" class="btn btn-success">Submit</button>
+      <button type="submit" class="btn btn-success" [disabled]="!d_form.valid">Submit</button>
 
     </form>
+    <p *ngIf="!activeusername" class="card-text p-a-1"> Please <a routerLink="/login">login</a> to create a discussion!</p>
   </div>
 </div>

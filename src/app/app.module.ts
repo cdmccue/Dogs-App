@@ -5,14 +5,9 @@ import { FormsModule }    from '@angular/forms';
 import { HttpClientModule }    from '@angular/common/http';
 import { AppRoutingModule }     from './app-routing.module';
 import { RouterModule } from '@angular/router';
-
-
 import { AppComponent }         from './app.component';
-// import { DashboardComponent }   from './dashboard/dashboard.component';
 import { DiscussionDetailComponent }  from './discussion-detail.component';
 import { CreateComponent } from './create.component';
-// import { HeroesComponent }      from './heroes/heroes.component';
-// import { HeroSearchComponent }  from './hero-search/hero-search.component';
 import { DiscussionService }          from './discussion.service';
 import { ReplyService } from './reply.service';
 import { MessageService }       from './message.service';
@@ -21,7 +16,11 @@ import { DiscussionComponent } from './discussion.component';
 import { Discussion } from './discussion';
 import { DiscussionForm } from './discussionForm';
 import { PostForm } from './postForm';
-
+import { LoginService } from './login.service';
+import { LoginComponent } from './login.component';
+import { UserForm } from './userForm';
+import { ReactiveFormsModule } from '@angular/forms';
+import { User } from './user';
 
 @NgModule({
   imports: [
@@ -29,19 +28,19 @@ import { PostForm } from './postForm';
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
-    RouterModule
+    RouterModule,
+    ReactiveFormsModule
   ],
   declarations: [
     AppComponent,
-    // DashboardComponent,
-    // DiscussionsComponent,
     DiscussionDetailComponent,
     MessagesComponent,
     DiscussionComponent,
-    CreateComponent
-    // DiscussionSearchComponent
+    CreateComponent,
+    LoginComponent
   ],
-  providers: [ DiscussionService, ReplyService, MessageService, Discussion, DiscussionForm, PostForm ],
+  providers: [ DiscussionService, ReplyService, MessageService, Discussion, DiscussionForm,
+    PostForm, LoginService, UserForm, User],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }

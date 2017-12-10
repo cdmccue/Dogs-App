@@ -3,5 +3,5 @@ export class Post {
   post_id: number;
   user: string;
   message: string;
-  created: string;
+  created: number;
 }

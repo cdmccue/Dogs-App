@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Params }   from '@angular/router';
 import { Location }                 from '@angular/common';
-
 import { Discussion } from './discussion';
 import { DiscussionService} from './discussion.service';
 import { ReplyService } from './reply.service';
@@ -9,6 +8,8 @@ import { Post } from './post';
 import { PostForm } from './postForm';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { LoginService } from './login.service';
 
 import 'rxjs/add/operator/switchMap';
 
@@ -24,8 +25,11 @@ export class DiscussionDetailComponent implements OnInit {
   posts: Post[];
   discussion_id: number;
   discussion_id_for_post: number;
-
+  p_form: FormGroup;
   submitted: boolean = false;
+  titleAlert:string = 'This field is required';
+  activeusername: string;
+
 
   constructor(
     private discussionService: DiscussionService,
@@ -33,8 +37,12 @@ export class DiscussionDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location,
     private router: Router,
+    private formBuilder: FormBuilder,
+    private loginService: LoginService,
     public post_model: PostForm
-  ) {}
+  ) {
+    this.activeusername = localStorage.getItem('currentUser');
+  }
 
   ngOnInit(): void {
     this.route.params
@@ -42,6 +50,11 @@ export class DiscussionDetailComponent implements OnInit {
       .subscribe(discussion => this.discussion = discussion);
 
     this.getPosts();
+
+    this.p_form = this.formBuilder.group({
+      username: [null, [Validators.required, Validators.maxLength(10)]],
+      message: [null, [Validators.required]]
+    })
   }
 
   getPosts(): void {
@@ -59,11 +72,18 @@ export class DiscussionDetailComponent implements OnInit {
     this.router.navigate(["/discussion"]);
   }
 
+  logout(): void {
+    this.loginService.logout();
+  }
+
   submitPost(form: NgForm): void {
 
     this.submitted = true;
 
     this.route.params.subscribe(params => {this.discussion_id_for_post = +params['id'];});
-    this.replyService.createPost(this.post_model, this.discussion_id_for_post);
+    this.replyService.createPost(this.post_model, this.discussion_id_for_post)
+      .subscribe(post => {this.posts.push(post)});
+
+    form.reset();
   }
 }

@@ -4,6 +4,8 @@ import { Discussion } from './discussion';
 import { DiscussionForm } from './discussionForm';
 import { DiscussionService } from './discussion.service';
 import { Router } from '@angular/router';
+import { LoginService } from './login.service';
+import { Observable } from 'rxjs/Observable';
 
 import { NgForm } from "@angular/forms";
 
@@ -15,20 +17,28 @@ import { NgForm } from "@angular/forms";
 export class DiscussionComponent implements OnInit {
 
   discussions: Discussion[];
+  activeusername: string;
 
   submitted: boolean = false;
 
   constructor(private discussionService: DiscussionService,
               public discussion_model: DiscussionForm,
-              private router: Router) { }
+              private loginService: LoginService,
+              private router: Router) {
+  }
 
   ngOnInit() {
     this.getDiscussions();
+    this.activeusername = this.loginService.getActiveUsername();
   }
 
   getDiscussions(): void {
     this.discussionService.getDiscussions()
       .subscribe(discussions => this.discussions = discussions);
+  }
+
+  logout(): void {
+    this.loginService.logout();
   }
 
   submitDiscussion(form: NgForm) {
@@ -39,6 +49,10 @@ export class DiscussionComponent implements OnInit {
 
   redirect() {
     this.router.navigate(['/create'])
+  }
+
+  neighborhood() {
+
   }
 
   goHome() {

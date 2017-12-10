@@ -44,12 +44,14 @@ export class ReplyService {
   }
 
   /** POST a reply post */
-  createPost(post: PostForm, id: number): void {
+  createPost(post: PostForm, id: number): Observable<Post> {
 
     const POST_url = `${this.discussionUrl}/${id}/post`;
 
-    this.http.post(POST_url, JSON.stringify(post), httpOptions)
-      .subscribe(post => this.router.navigate([`/discussion/${id}`]));
+    return this.http.post(POST_url, JSON.stringify(post), httpOptions);
+
+    // this.http.post(POST_url, JSON.stringify(post), httpOptions)
+    //   .subscribe(post => this.router.navigate([`/discussion/${id}`]));
   }
 
 
