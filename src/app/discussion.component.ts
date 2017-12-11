@@ -17,15 +17,11 @@ import { NgForm } from "@angular/forms";
 export class DiscussionComponent implements OnInit {
 
   discussions: Discussion[];
-  view_discussions: Discussion[];
   activeusername: string;
   neighborhood: boolean = false;
   submitted: boolean = false;
   selectedTown: string;
   selectedStreet: string;
-  townList: string[];
-  public postsPerPage = 4;
-  public selectedPage = 1;
 
   constructor(private discussionService: DiscussionService,
               public discussion_model: DiscussionForm,
@@ -41,9 +37,7 @@ export class DiscussionComponent implements OnInit {
   getDiscussions(): void {
     this.discussionService.getDiscussions()
       .subscribe(discussions => {
-        let pageIndex = (this.selectedPage - 1) * this.postsPerPage;
         this.discussions = discussions;
-        this.view_discussions = this.discussions.slice(pageIndex, pageIndex + this.postsPerPage);
       });
 
   }
@@ -67,30 +61,10 @@ export class DiscussionComponent implements OnInit {
   }
 
   goHome() {
-    this.router.navigate(["/discussion"]);
+    location.reload();
   }
 
   clearStreet() {
     this.selectedStreet = null;
-
-    this.selectedPage = 1;
-    let pageIndex = (this.selectedPage - 1) * this.postsPerPage;
-    this.view_discussions = this.discussions;
   }
-
-  changePage(newPage: number) {
-    this.selectedPage = newPage;
-    let pageIndex = (this.selectedPage - 1) * this.postsPerPage;
-    this.view_discussions = this.discussions.slice(pageIndex, pageIndex + this.postsPerPage);
-  }
-  changePageSize(newSize: number) {
-    this.postsPerPage = Number(newSize);
-    this.changePage(1);
-  }
-
-  get pageNumbers(): number[] {
-    return Array(Math.ceil(Object.keys(this.discussions).length / this.postsPerPage))
-      .fill(0).map((x, i) => i + 1)
-  }
-
 }

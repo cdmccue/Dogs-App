@@ -22,7 +22,7 @@
 </select>
 
 <div *ngIf="selectedTown==null || selectedTown==null" class="p-a-1">
-    <div *ngFor="let discussion of view_discussions" class="card card-outline-primary">
+    <div *ngFor="let discussion of discussions" class="card card-outline-primary">
       <h4 class="card-header">
         <a routerLink="/discussion/{{discussion.id}}">{{discussion.subject}}</a></h4>
       <div class="card-text p-a-1">
@@ -34,7 +34,7 @@
 </div>
 
 <div *ngIf="selectedTown!=null && selectedStreet==null" class="p-a-1">
-  <div *ngFor="let discussion of view_discussions">
+  <div *ngFor="let discussion of discussions">
     <div *ngIf="discussion.town == selectedTown" class="card card-outline-primary">
       <h4 class="card-header">
         <a routerLink="/discussion/{{discussion.id}}">{{discussion.subject}}</a></h4>
@@ -48,7 +48,7 @@
 </div>
 
 <div *ngIf="selectedTown!=null && selectedStreet!=null" class="p-a-1">
-  <div *ngFor="let discussion of view_discussions">
+  <div *ngFor="let discussion of discussions">
     <div *ngIf="discussion.town == selectedTown && discussion.street == selectedStreet" class="card card-outline-primary">
       <h4 class="card-header">
         <a routerLink="/discussion/{{discussion.id}}">{{discussion.subject}}</a></h4>
@@ -59,11 +59,4 @@
       </div>
     </div>
   </div>
-</div>
-
-<div class="btn-group m-l-1">
-  <button *ngFor="let page of pageNumbers" (click)="changePage(page)"
-          class="btn btn-outline-primary" [class.active]="page == selectedPage">
-    {{page}}
-  </button>
 </div>

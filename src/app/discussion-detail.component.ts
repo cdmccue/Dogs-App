@@ -29,8 +29,6 @@ export class DiscussionDetailComponent implements OnInit {
   submitted: boolean = false;
   titleAlert:string = 'This field is required';
   activeusername: string;
-  public postsPerPage = 4;
-  public selectedPage = 1;
 
 
   constructor(
