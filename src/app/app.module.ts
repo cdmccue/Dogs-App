@@ -21,6 +21,9 @@ import { LoginComponent } from './login.component';
 import { UserForm } from './userForm';
 import { ReactiveFormsModule } from '@angular/forms';
 import { User } from './user';
+import { RegisterForm } from './registerForm';
+import { StreetPipe } from './streetPipe';
+import { TownPipe } from './townPipe';
 
 @NgModule({
   imports: [
@@ -37,10 +40,12 @@ import { User } from './user';
     MessagesComponent,
     DiscussionComponent,
     CreateComponent,
-    LoginComponent
+    LoginComponent,
+    StreetPipe,
+    TownPipe
   ],
   providers: [ DiscussionService, ReplyService, MessageService, Discussion, DiscussionForm,
-    PostForm, LoginService, UserForm, User],
+    PostForm, LoginService, UserForm, User, RegisterForm],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }

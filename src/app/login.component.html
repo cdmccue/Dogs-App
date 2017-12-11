@@ -1,15 +1,15 @@
 <div class="navbar navbar-inverse bg-inverse">
   <a class="navbar-brand text-white">Dogs On My Street</a>
-  <button class="btn btn-primary pull-xs-right" (click)="goHome()">
-    <span class="glyphicon glyphicon-home">Home</span>
-  </button>
+  <button class="btn btn-primary pull-xs-right" (click)="goHome()">Home</button>
 </div>
 
-<div class="col-xs-6 p-a-1">
+<div *ngIf="!newuser" class="p-a-1">
   <div class="card card-outline-primary">
     <h4 class="card-header">
       Login:</h4>
     <div class="card-text p-a-1">
+      <div class="alert alert-danger" *ngIf="incorrect">Password does not match username</div>
+      <div class="alert alert-danger" *ngIf="doesntexist">User name does not exist. Sign up!</div>
       <form class="card-text p-a-1" (ngSubmit)="login(form)" #form="ngForm">
 
         <div class="form-group">
@@ -20,41 +20,42 @@
 
         <div class="form-group">
           <label for="password">Password:</label>
-          <input type="text" class="form-control" id="password"
+          <input type="password" class="form-control" id="password"
                  [(ngModel)]="user_model.password" name="password">
         </div>
 
-        <button type="submit" class="btn btn-success">Submit</button>
+        <button type="submit" class="btn btn-success">Login</button><br>
+
+        <button type="button" class="btn btn-primary m-t-1" (click)="signup()"> New user? Sign up!</button>
 
       </form>
     </div>
   </div>
 </div>
 
-<div class="col-xs-6 p-a-1">
+<div *ngIf="newuser" class="p-a-1">
   <div class="card card-outline-primary">
     <h4 class="card-header">
       Create Account:</h4>
     <div class="card-text p-a-1">
       <form class="card-text p-a-1" (ngSubmit)="create_login(cform)" #cform="ngForm">
+        <div class="alert alert-danger" *ngIf="taken">Username is already taken</div>
 
         <div class="form-group">
           <label for="cusername">Username:</label>
           <input type="text" class="form-control" id="cusername"
-                 [(ngModel)]="user_model.user" name="cusername">
+                 [(ngModel)]="user_create.user" name="cusername">
         </div>
 
         <div class="form-group">
           <label for="cpassword">Password:</label>
-          <input type="text" class="form-control" id="cpassword"
-                 [(ngModel)]="user_model.password" name="cpassword">
+          <input type="password" class="form-control" id="cpassword"
+                 [(ngModel)]="user_create.password" name="cpassword">
         </div>
 
-        <button type="submit" class="btn btn-success">Submit</button>
+        <button type="submit" class="btn btn-success">Sign up!</button>
 
       </form>
     </div>
   </div>
 </div>
-
-<p>{{activeusername}}</p>

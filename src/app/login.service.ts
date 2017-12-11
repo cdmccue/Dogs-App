@@ -21,31 +21,26 @@ const httpOptions = {
 export class LoginService {
 
   private loginUrl = 'http://localhost:8080/services/rest/user';
-  active_username: string;
 
   constructor(private http: HttpClient,
               private messageService: MessageService,
               private router: Router) {
   }
 
-  responseStatus: number;
-
-  // login(user: UserForm): void {
-  //
-  //   this.http.post(this.loginUrl, JSON.stringify(user), httpOptions)
-  //     .subscribe(
-  //       (val) => {console.log(val['user'])}
-  //     );
-  // }
-
   login(user: UserForm): Observable<User> {
-    return this.http
-      .post(this.loginUrl, JSON.stringify(user), httpOptions)
+    return this.http.put(this.loginUrl, JSON.stringify(user), httpOptions)
       .pipe(
       map(
-        (res) => res),
-        tap(res => localStorage.setItem('currentUser', res['user']))//['user']
+        (res) => res)
   );
+  }
+
+  createLogin(user: UserForm): Observable<User> {
+    return this.http.post(this.loginUrl, JSON.stringify(user), httpOptions)
+      .pipe(
+        map(
+          (res) => res)
+      );
   }
 
   logout(): void {
@@ -56,34 +51,6 @@ export class LoginService {
   getActiveUsername(): string {
     return localStorage.getItem('currentUser');
   }
-
-  // /** POST a reply post */
-  // login(user: UserForm): Observable<User> {
-  //
-  //   return this.http.post(this.loginUrl, JSON.stringify(user), httpOptions);
-  //
-  //     // .subscribe((response: Response) => this.responseStatus = response.status);
-  //
-  //   // console.log(this.responseStatus);
-  //     // .map((response: Response) => {
-  //     // this.responseStatus = response.status;
-  //     // console.log(this.responseStatus);
-  //     // return response.status;
-  //     // })
-  //
-  //     // .pipe(
-  //     // map(res: Response => {
-  //     //   if (res.status === 226) {
-  //     //     console.log("user taken");
-  //     //   }
-  //     //   else {
-  //     //     return res.json();
-  //     //   }
-  //     // })
-  //     // );
-  //     // .subscribe(res => this.router.navigate(['/discussion']));
-  //
-  // }
 
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {

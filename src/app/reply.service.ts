@@ -49,9 +49,6 @@ export class ReplyService {
     const POST_url = `${this.discussionUrl}/${id}/post`;
 
     return this.http.post(POST_url, JSON.stringify(post), httpOptions);
-
-    // this.http.post(POST_url, JSON.stringify(post), httpOptions)
-    //   .subscribe(post => this.router.navigate([`/discussion/${id}`]));
   }
 
 

@@ -32,7 +32,6 @@ export class CreateComponent implements OnInit {
 
   ngOnInit() {
     this.d_form = this.formBuilder.group({
-      username: [null, [Validators.required, Validators.maxLength(10)]],
       town: [null, [Validators.required, Validators.maxLength(15)]],
       street: [null, [Validators.required, Validators.maxLength(15)]],
       subject: [null, [Validators.required]],
@@ -43,6 +42,8 @@ export class CreateComponent implements OnInit {
   submitDiscussion(form: NgForm) {
 
     this.submitted = true;
+
+    this.discussion_model.user = this.loginService.getActiveUsername();
 
     this.discussionService.createDiscussion(this.discussion_model);
 

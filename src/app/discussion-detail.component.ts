@@ -29,6 +29,8 @@ export class DiscussionDetailComponent implements OnInit {
   submitted: boolean = false;
   titleAlert:string = 'This field is required';
   activeusername: string;
+  public postsPerPage = 4;
+  public selectedPage = 1;
 
 
   constructor(
@@ -52,7 +54,6 @@ export class DiscussionDetailComponent implements OnInit {
     this.getPosts();
 
     this.p_form = this.formBuilder.group({
-      username: [null, [Validators.required, Validators.maxLength(10)]],
       message: [null, [Validators.required]]
     })
   }
@@ -60,8 +61,12 @@ export class DiscussionDetailComponent implements OnInit {
   getPosts(): void {
     //set discussion id from active route parameter
     this.route.params.subscribe(params => {this.discussion_id = +params['id'];});
+    this.post_model.user = this.loginService.getActiveUsername();
     this.replyService.getPosts(this.discussion_id)
-      .subscribe(posts => this.posts = posts);
+      .subscribe(posts => {
+        this.posts = posts;
+      });
+
   }
 
   goBack(): void {

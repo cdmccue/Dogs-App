@@ -1,25 +1,69 @@
 <div class="navbar navbar-inverse bg-inverse">
   <a class="navbar-brand text-white">Dogs On My Street</a>
-  <button class="btn btn-primary pull-xs-right" (click)="goHome()">
-    <span class="glyphicon glyphicon-home">Home</span>
-  </button>
+  <button class="btn btn-primary pull-xs-right" (click)="goHome()">Home</button>
   <button *ngIf="!activeusername" class="btn btn-primary pull-xs-right m-r-1" routerLink="/login">Login</button>
   <button *ngIf="activeusername" class="btn btn-primary pull-xs-right m-r-1" (click)="logout()">Logout {{activeusername}}</button>
 </div>
 
-<h2 class="p-a-1">Discussions</h2>
+<h2 class="p-a-1">bark bark!</h2>
 
 <button class="btn btn-primary m-l-1" (click)="redirect()">New Discussion!</button>
-<!--<button class="btn btn-primary m-l-1" (click)="neighborhood()">Find your neighborhood!</button>-->
+<button class="btn btn-primary m-l-1" (click)="neighborhood_check()">Find your neighborhood!</button>
 
-<div class="p-a-1">
-  <div *ngFor="let discussion of discussions" class="card card-outline-primary">
-    <h4 class="card-header">
-      <a routerLink="/discussion/{{discussion.id}}">{{discussion.subject}}</a></h4>
-    <div class="card-text p-a-1">
-      Neighborhood: {{discussion.street}}, {{discussion.town}}<br>
-      Posted by: {{discussion.user}}<br>
-      Date posted: {{discussion.created | date : "short"}}
+<select *ngIf="neighborhood" class="m-l-1" (change)="clearStreet()" [(ngModel)]="selectedTown">
+  <option selected disabled>Select Your Town</option>
+  <option *ngFor="let discussion of discussions | townfilter">{{discussion.town}}</option>
+</select>
+
+<select *ngIf="neighborhood && selectedTown!=null" class="m-l-1" [(ngModel)]="selectedStreet">
+  <option selected disabled>Select Your Street</option>
+    <option *ngFor="let discussion of discussions | streetfilter:selectedTown">
+      {{discussion.street}}</option>
+</select>
+
+<div *ngIf="selectedTown==null || selectedTown==null" class="p-a-1">
+    <div *ngFor="let discussion of view_discussions" class="card card-outline-primary">
+      <h4 class="card-header">
+        <a routerLink="/discussion/{{discussion.id}}">{{discussion.subject}}</a></h4>
+      <div class="card-text p-a-1">
+        Neighborhood: {{discussion.street}}, {{discussion.town}}<br>
+        Posted by: {{discussion.user}}<br>
+        Date posted: {{discussion.created | date : "short"}}
+      </div>
+    </div>
+</div>
+
+<div *ngIf="selectedTown!=null && selectedStreet==null" class="p-a-1">
+  <div *ngFor="let discussion of view_discussions">
+    <div *ngIf="discussion.town == selectedTown" class="card card-outline-primary">
+      <h4 class="card-header">
+        <a routerLink="/discussion/{{discussion.id}}">{{discussion.subject}}</a></h4>
+      <div class="card-text p-a-1">
+        Neighborhood: {{discussion.street}}, {{discussion.town}}<br>
+        Posted by: {{discussion.user}}<br>
+        Date posted: {{discussion.created | date : "short"}}
+      </div>
     </div>
   </div>
+</div>
+
+<div *ngIf="selectedTown!=null && selectedStreet!=null" class="p-a-1">
+  <div *ngFor="let discussion of view_discussions">
+    <div *ngIf="discussion.town == selectedTown && discussion.street == selectedStreet" class="card card-outline-primary">
+      <h4 class="card-header">
+        <a routerLink="/discussion/{{discussion.id}}">{{discussion.subject}}</a></h4>
+      <div class="card-text p-a-1">
+        Neighborhood: {{discussion.street}}, {{discussion.town}}<br>
+        Posted by: {{discussion.user}}<br>
+        Date posted: {{discussion.created | date : "short"}}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="btn-group m-l-1">
+  <button *ngFor="let page of pageNumbers" (click)="changePage(page)"
+          class="btn btn-outline-primary" [class.active]="page == selectedPage">
+    {{page}}
+  </button>
 </div>

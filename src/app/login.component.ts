@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 
 import { LoginService } from "./login.service";
 import { UserForm } from "./userForm";
+import { RegisterForm } from "./registerForm";
 
 @Component({
   moduleId: module.id,
@@ -13,9 +14,16 @@ import { UserForm } from "./userForm";
 export class LoginComponent {
 
   public activeusername: string;
+  public newuser = false;
+
+  //for alerts
+  public taken: boolean;
+  public incorrect: boolean;
+  public doesntexist: boolean;
 
   constructor(private router: Router,
               private loginService: LoginService,
+              public user_create: RegisterForm,
               public user_model: UserForm) {
     this.activeusername = localStorage.getItem('currentUser');
   }
@@ -27,33 +35,48 @@ export class LoginComponent {
   login(form: NgForm): void {
 
     this.loginService.login(this.user_model)
-      // .subscribe(res => localStorage.setItem('currentUser', res['user']));
-      // .subscribe(res => {this.activeusername = res['user'];});
-    // this.activeusername = this.loginService.active_username;
-    // console.log(this.activeusername);
-      // .subscribe(data => {console.log(data);});
-      .subscribe(res => this.router.navigate(['/discussion']));
-
-    // console.log(this.active_user);
-
-    console.log(2);
+      .subscribe(
+        result => {
+          localStorage.setItem('currentUser', result['user']);
+      },
+      error => {
+          if (error.status == 406) {
+            this.doesntexist = false;
+            this.incorrect = true;
+          }
+          if (error.status == 404) {
+            this.incorrect = false;
+            this.doesntexist = true;
+          }
+      },
+      () => {
+          this.router.navigate(['/discussion']);
+      });
 
     form.reset();
-    // this.router.navigate(['/discussion']);
+    this.newuser = false;
   }
 
-  // authenticate(form: NgForm) {
-  //   if (form.valid) {
-  //     this.login.authenticate(this.username, this.password)
-  //       .subscribe(response => {
-  //         if (response) {
-  //           this.router.navigateByUrl("/admin/main");
-  //         }
-  //         this.errorMessage = "Authentication Failed";
-  //       })
-  //   } else {
-  //     this.errorMessage = "Form Data Invalid";
-  //   }
-  // }
+  create_login(form: NgForm): void {
+    this.loginService.createLogin(this.user_create)
+      .subscribe(
+        result => {
+          localStorage.setItem('currentUser', result['user']);
+        },
+        error => {
+          if (error.status == 226) {
+            this.taken = true;
+          }
+        },
+        () => {
+          this.taken = false;
+          this.router.navigate(['/discussion']);
+          form.reset();
+          this.newuser = false;
+        });
+  }
 
+  signup(): void {
+    this.newuser = true;
+  }
 }

@@ -19,7 +19,6 @@ const httpOptions = {
 export class DiscussionService {
 
   private discussionUrl = 'http://localhost:8080/services/rest/discussion';
-  // private headers = new Headers({'Content-Type': 'application/json'});
 
   constructor(private http: HttpClient,
               private router: Router,
